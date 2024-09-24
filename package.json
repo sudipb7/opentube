@@ -1,0 +1,23 @@
+{
+  "name": "opentube",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:server": "turbo -F server dev",
+    "build": "turbo build",
+    "build:server": "turbo -F server build",
+    "start": "turbo start",
+    "start:server": "turbo -F server start",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md,js,json,yaml,css,mdx}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^2.1.2",
+    "typescript": "^5.4.5"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18"
+  }
+}

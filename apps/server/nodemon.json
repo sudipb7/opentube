@@ -1,0 +1,6 @@
+{
+  "ext": ".ts,.js",
+  "watch": ["src", ".env"],
+  "ignore": ["src/logs/*", "public/*", "node_modules/*"],
+  "exec": "ts-node ./src/index.ts"
+}

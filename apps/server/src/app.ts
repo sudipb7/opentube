@@ -5,18 +5,20 @@ import express from "express";
 import cookieParser from "cookie-parser";
 
 import { Routes } from "./types/common";
-import { LOG_FORMAT, NODE_ENV, PORT } from "./config";
+import { CORS_ORIGINS, LOG_FORMAT, NODE_ENV, PORT } from "./config";
 import { logger, stream } from "./utils/logger";
 
 class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
+  private origins: string[];
 
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || "development";
     this.port = PORT || 8000;
+    this.origins = CORS_ORIGINS?.split(",") || [];
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
@@ -36,13 +38,8 @@ class App {
   }
 
   private initializeMiddlewares() {
+    this.app.use(cors({ origin: this.origins, credentials: true }));
     this.app.use(morgan(LOG_FORMAT!, { stream }));
-    this.app.use(
-      cors({
-        origin: ["http://localhost:3000"],
-        credentials: true,
-      })
-    );
     this.app.use(helmet());
     this.app.use(express.json({ limit: "50mb" }));
     this.app.use(express.urlencoded({ extended: true, limit: "50mb" }));
@@ -52,7 +49,7 @@ class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
-      this.app.use("/", route.router);
+      this.app.use("/v1", route.router);
     });
   }
 }

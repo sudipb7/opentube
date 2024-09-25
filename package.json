@@ -8,6 +8,9 @@
     "build:server": "turbo -F server build",
     "start": "turbo start",
     "start:server": "turbo -F server start",
+    "db:generate": "pnpm -F server db:generate",
+    "db:migrate": "pnpm -F server db:migrate",
+    "db:studio": "pnpm -F server db:studio",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md,js,json,yaml,css,mdx}\""
   },

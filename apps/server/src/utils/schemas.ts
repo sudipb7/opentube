@@ -1,7 +1,12 @@
-import { z, ZodError } from "zod";
+import { z, ZodError, ZodSchema } from "zod";
+import { ApiResponse } from "./api";
 
-const throwZodError = (error: ZodError) => {
-  return error.errors[0].message;
+const handleValidation = <T>(schema: ZodSchema<T>, data: unknown): { error?: ApiResponse<any>; data?: T } => {
+  const result = schema.safeParse(data);
+  if (!result.success) {
+    return { error: new ApiResponse(400, result.error.errors[0].message) };
+  }
+  return { data: result.data };
 };
 
 const signUpSchema = z.object({
@@ -19,4 +24,8 @@ const signInSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
-export { throwZodError, signUpSchema, signInSchema };
+type SignUpInput = z.infer<typeof signUpSchema>;
+type SignInInput = z.infer<typeof signInSchema>;
+
+export { handleValidation, signUpSchema, signInSchema };
+export type { SignUpInput, SignInInput };
